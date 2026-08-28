@@ -7,13 +7,14 @@ type Customer = {
   id: string;
   name: string;
   phone: string;
-  purchases: number;
-  reward_available: boolean;
+  puntos: number;
+  puntos_acumulados: number;
 };
 
 export default function AdminPage() {
 const [phone, setPhone] = useState("");
 const [customer, setCustomer] = useState<Customer | null>(null);
+const [purchaseAmount, setPurchaseAmount] = useState("");  
 const [newCustomerName, setNewCustomerName] = useState("");
 const [newCustomerPhone, setNewCustomerPhone] = useState("");
 const [showNewCustomer, setShowNewCustomer] = useState(false);
