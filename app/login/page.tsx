@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../lib/supabase";
+import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -112,12 +113,12 @@ export default function LoginPage() {
           </form>
 
           <div className="text-center mt-8">
-            <Link href="/">
-              href="/"
-              className="text-sm text-[#765c50] hover:text-[#682631]"
-            >
-              ← Volver a Umami Rewards
-            </a>
+            <Link
+  href="/"
+  className="text-sm text-[#765c50] hover:text-[#682631]"
+>
+  ← Volver a Umami Rewards
+</Link>
           </div>
         </div>
       </div>
