@@ -22,7 +22,6 @@ const [showNewCustomer, setShowNewCustomer] = useState(false);
 
 const [loading, setLoading] = useState(false);
 const [message, setMessage] = useState("");
-const [purchaseAmount, setPurchaseAmount] = useState("");
 const [authenticated, setAuthenticated] = useState(false);
 const [checkingAuth, setCheckingAuth] = useState(true);
 
