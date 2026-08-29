@@ -83,6 +83,8 @@ setCustomer({
   id: data.id,
   name: data.name,
   phone: data.phone,
+  purchases: data.purchases ?? 0,
+  reward_available: data.reward_available ?? false,
   puntos: data.puntos,
   puntos_acumulados: data.puntos_acumulados,
   nivel: data.nivel,
@@ -137,6 +139,8 @@ async function createCustomer() {
   puntos: data.puntos,
   puntos_acumulados: data.puntos_acumulados,
   nivel: data.nivel,
+  purchases: data.purchases ?? 0,
+  reward_available: data.reward_available ?? false,
 });
 
     setPhone(data.phone);
