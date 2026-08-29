@@ -9,6 +9,7 @@ type Customer = {
   phone: string;
   puntos: number;
   puntos_acumulados: number;
+  nivel: string;
 };
 
 export default function AdminPage() {
@@ -76,13 +77,14 @@ async function logout() {
         return;
       }
 
-      setCustomer({
-        id: data.id,
-        name: data.name,
-        phone: data.phone,
-        purchases: data.purchases,
-        reward_available: data.reward_available,
-      });
+setCustomer({
+  id: data.id,
+  name: data.name,
+  phone: data.phone,
+  puntos: data.puntos,
+  puntos_acumulados: data.puntos_acumulados,
+  nivel: data.nivel,
+});
     } catch (error) {
       console.error(error);
       setMessage("Ocurrió un error. Intenta nuevamente.");
@@ -127,12 +129,13 @@ async function createCustomer() {
     }
 
     setCustomer({
-      id: data.id,
-      name: data.name,
-      phone: data.phone,
-      purchases: data.purchases,
-      reward_available: data.reward_available,
-    });
+  id: data.id,
+  name: data.name,
+  phone: data.phone,
+  puntos: data.puntos,
+  puntos_acumulados: data.puntos_acumulados,
+  nivel: data.nivel,
+});
 
     setPhone(data.phone);
 
@@ -155,9 +158,17 @@ async function createCustomer() {
     setMessage("");
 
     try {
-      const { data, error } = await supabase.rpc("add_purchase", {
-        customer_id: customer.id,
-      });
+      const amount = Number(purchaseAmount);
+
+if (!amount || amount <= 0) {
+  setMessage("Ingresa un monto de compra válido.");
+  return;
+}
+
+const { data, error } = await supabase.rpc("add_purchase", {
+  customer_id: customer.id,
+  purchase_amount: amount,
+});
 
       if (error) {
         console.error(error);
@@ -171,11 +182,14 @@ async function createCustomer() {
       }
 
       setCustomer({
-        ...customer,
-        purchases: data.purchases,
-        reward_available: data.reward_available,
-      });
+  ...customer,
+  puntos: data.puntos,
+  puntos_acumulados: data.puntos_acumulados,
+  nivel: data.nivel,
+});
 
+      setPurchaseAmount("");
+      
       setMessage("✅ Compra registrada correctamente.");
     } catch (error) {
       console.error(error);
@@ -340,7 +354,7 @@ if (error) {
                   </p>
 
                   <p className="mt-1 text-3xl font-bold">
-                    {customer.purchases}/10
+                    {customer.puntos} pts
                   </p>
                 </div>
               </div>
@@ -369,7 +383,7 @@ if (error) {
               <div className="mt-8 grid gap-4 sm:grid-cols-2">
                 <button
                   onClick={addPurchase}
-                  disabled={loading || customer.purchases >= 10}
+                  disabled={loading}
                   className="rounded-xl bg-[#e8c88e] px-6 py-4 font-bold text-[#3b2418] hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   {loading
