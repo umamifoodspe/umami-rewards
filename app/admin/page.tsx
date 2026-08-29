@@ -15,6 +15,7 @@ type Customer = {
 };
 
 export default function AdminPage() {
+  console.log("🚨 ADMIN PAGE SE ESTÁ EJECUTANDO");
 const [phone, setPhone] = useState("");
 const [customer, setCustomer] = useState<Customer | null>(null);
 const [purchaseAmount, setPurchaseAmount] = useState("");  
