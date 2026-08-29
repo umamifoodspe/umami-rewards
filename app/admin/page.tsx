@@ -421,3 +421,33 @@ if (error) {
     🎁 Canjear recompensa
   </button>
 </div>
+      </div>
+
+      {/* REWARD */}
+      {customer.reward_available && (
+        <div className="border-t border-white/10 bg-white/10 p-6">
+          <p className="text-sm text-[#ead8cf]">
+            RECOMPENSA DISPONIBLE
+          </p>
+
+          <p className="mt-1 text-xl font-bold">
+            1 postre gratis
+          </p>
+        </div>
+      )}
+    </div>
+  )}
+</section>
+
+{/* FOOTER */}
+<footer className="mt-20 bg-[#3b2418] px-6 py-8 text-center text-white">
+  <p className="font-bold">Umami Foods & Co.</p>
+
+  <p className="mt-1 text-sm text-[#ead8cf]">
+    Panel administrativo · Umami Rewards
+  </p>
+</footer>
+
+</main>
+);
+}
