@@ -22,6 +22,7 @@ const [showNewCustomer, setShowNewCustomer] = useState(false);
 
 const [loading, setLoading] = useState(false);
 const [message, setMessage] = useState("");
+const [purchaseAmount, setPurchaseAmount] = useState("");
 const [authenticated, setAuthenticated] = useState(false);
 const [checkingAuth, setCheckingAuth] = useState(true);
 
@@ -153,7 +154,12 @@ async function createCustomer() {
 }
   async function addPurchase() {
     if (!customer) return;
+const amount = Number(purchaseAmount);
 
+if (!purchaseAmount || amount <= 0) {
+  setMessage("Ingresa un monto de compra válido.");
+  return;
+}
     setLoading(true);
     setMessage("");
 
@@ -191,6 +197,7 @@ const { data, error } = await supabase.rpc("add_purchase", {
       setPurchaseAmount("");
       
       setMessage("✅ Compra registrada correctamente.");
+      setPurchaseAmount("");
     } catch (error) {
       console.error(error);
       setMessage("Ocurrió un error al registrar la compra.");
@@ -380,50 +387,37 @@ if (error) {
               </div>
 
               {/* ACTIONS */}
-              <div className="mt-8 grid gap-4 sm:grid-cols-2">
-                <button
-                  onClick={addPurchase}
-                  disabled={loading}
-                  className="rounded-xl bg-[#e8c88e] px-6 py-4 font-bold text-[#3b2418] hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  {loading
-                    ? "Procesando..."
-                    : "+ Registrar compra"}
-                </button>
 
-                <button
-                  onClick={redeemReward}
-                  disabled={loading || !customer.reward_available}
-                  className="rounded-xl border border-white/40 px-6 py-4 font-bold text-white hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  🎁 Canjear recompensa
-                </button>
-              </div>
-            </div>
+<div className="mt-8">
+  <label className="mb-2 block text-sm font-semibold text-[#ead8cf]">
+    Monto de la compra
+  </label>
 
-            {/* REWARD */}
-            {customer.reward_available && (
-              <div className="border-t border-white/10 bg-white/10 p-6">
-                <p className="text-sm text-[#ead8cf]">
-                  RECOMPENSA DISPONIBLE
-                </p>
+  <div className="flex flex-col gap-3 sm:flex-row">
+    <input
+      type="number"
+      min="0"
+      step="0.01"
+      value={purchaseAmount}
+      onChange={(e) => setPurchaseAmount(e.target.value)}
+      placeholder="Ej. 25.90"
+      className="flex-1 rounded-xl border border-white/20 bg-white px-4 py-4 text-[#3b2418] outline-none focus:border-[#e8c88e]"
+    />
 
-                <p className="mt-1 text-xl font-bold">
-                  1 postre gratis
-                </p>
-              </div>
-            )}
-          </div>
-        )}
-      </section>
+    <button
+      onClick={addPurchase}
+      disabled={loading || customer.purchases >= 10}
+      className="rounded-xl bg-[#e8c88e] px-6 py-4 font-bold text-[#3b2418] hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+    >
+      {loading ? "Procesando..." : "+ Registrar compra"}
+    </button>
+  </div>
 
-      {/* FOOTER */}
-      <footer className="mt-20 bg-[#3b2418] px-6 py-8 text-center text-white">
-        <p className="font-bold">Umami Foods & Co.</p>
-        <p className="mt-1 text-sm text-[#ead8cf]">
-          Panel administrativo · Umami Rewards
-        </p>
-      </footer>
-    </main>
-  );
-}
+  <button
+    onClick={redeemReward}
+    disabled={loading || !customer.reward_available}
+    className="mt-4 w-full rounded-xl border border-white/40 px-6 py-4 font-bold text-white hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
+  >
+    🎁 Canjear recompensa
+  </button>
+</div>
