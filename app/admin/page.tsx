@@ -24,8 +24,8 @@ const [showNewCustomer, setShowNewCustomer] = useState(false);
 
 const [loading, setLoading] = useState(false);
 const [message, setMessage] = useState("");
-const [authenticated, setAuthenticated] = useState(false);
-const [checkingAuth, setCheckingAuth] = useState(true);
+const [authenticated, setAuthenticated] = useState(true);
+const [checkingAuth, setCheckingAuth] = useState(false);
 
   useEffect(() => {
     async function checkAuth() {
