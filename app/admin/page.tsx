@@ -7,6 +7,8 @@ type Customer = {
   id: string;
   name: string;
   phone: string;
+  purchases: number;
+  reward_available: boolean;
   puntos: number;
   puntos_acumulados: number;
   nivel: string;
