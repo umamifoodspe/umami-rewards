@@ -112,7 +112,7 @@ export default function LoginPage() {
           </form>
 
           <div className="text-center mt-8">
-            <a
+            <Link href="/">
               href="/"
               className="text-sm text-[#765c50] hover:text-[#682631]"
             >
