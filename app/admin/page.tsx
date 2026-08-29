@@ -157,58 +157,53 @@ async function createCustomer() {
     setLoading(false);
   }
 }
-  async function addPurchase() {
-    if (!customer) return;
-const amount = Number(purchaseAmount);
+async function addPurchase() {
+  if (!customer) return;
 
-if (!purchaseAmount || amount <= 0) {
-  setMessage("Ingresa un monto de compra válido.");
-  return;
-}
-    setLoading(true);
-    setMessage("");
+  const amount = Number(purchaseAmount);
 
-    try {
-      const amount = Number(purchaseAmount);
+  if (!purchaseAmount || amount <= 0) {
+    setMessage("Ingresa un monto de compra válido.");
+    return;
+  }
 
-if (!amount || amount <= 0) {
-  setMessage("Ingresa un monto de compra válido.");
-  return;
-}
+  setLoading(true);
+  setMessage("");
 
-const { data, error } = await supabase.rpc("add_purchase", {
-  customer_id: customer.id,
-  purchase_amount: amount,
-});
+  try {
+    const { data, error } = await supabase.rpc("add_purchase", {
+      customer_id: customer.id,
+      purchase_amount: amount,
+      reference: "Compra registrada por administrador",
+    });
 
-      if (error) {
-        console.error(error);
-        setMessage("No pudimos registrar la compra.");
-        return;
-      }
-
-      if (!data?.success) {
-        setMessage(data?.message || "No pudimos registrar la compra.");
-        return;
-      }
-
-      setCustomer({
-  ...customer,
-  puntos: data.puntos,
-  puntos_acumulados: data.puntos_acumulados,
-  nivel: data.nivel,
-});
-
-      setPurchaseAmount("");
-      
-      setMessage("✅ Compra registrada correctamente.");
-      setPurchaseAmount("");
-    } catch (error) {
-      console.error(error);
-      setMessage("Ocurrió un error al registrar la compra.");
-    } finally {
-      setLoading(false);
+    if (error) {
+      console.error("ERROR RPC add_purchase:", error);
+      setMessage(`Error Supabase: ${error.message}`);
+      return;
     }
+
+    if (!data?.success) {
+      setMessage(data?.message || "No pudimos registrar la compra.");
+      return;
+    }
+
+    setCustomer({
+      ...customer,
+      purchases: data.purchases,
+      reward_available: data.reward_available,
+      puntos: data.puntos,
+      puntos_acumulados: data.puntos_acumulados,
+      nivel: data.nivel,
+    });
+
+    setPurchaseAmount("");
+    setMessage("✅ Compra registrada correctamente.");
+  } catch (error) {
+    console.error("ERROR al registrar compra:", error);
+    setMessage("Ocurrió un error al registrar la compra.");
+  } finally {
+    setLoading(false);
   }
 
   async function redeemReward() {
@@ -455,4 +450,5 @@ if (error) {
 
 </main>
 );
+}
 }
