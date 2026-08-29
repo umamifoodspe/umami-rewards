@@ -9,6 +9,9 @@ type Customer = {
   phone: string;
   purchases: number;
   reward_available: boolean;
+  puntos: number;
+  puntos_acumulados: number;
+  nivel: string;
 };
 
 export default function ClientePage() {
@@ -52,6 +55,9 @@ export default function ClientePage() {
         phone: data.phone,
         purchases: data.purchases,
         reward_available: data.reward_available,
+        puntos: data.puntos ?? 0,
+        puntos_acumulados: data.puntos_acumulados ?? 0,
+        nivel: data.nivel ?? "Bronce",
       });
     } catch (error) {
       console.error(error);
@@ -73,6 +79,7 @@ export default function ClientePage() {
             <div className="text-2xl font-bold tracking-tight text-[#24150f]">
               UMAMI
             </div>
+
             <div className="text-xs tracking-[0.25em] text-[#8b4a4b]">
               REWARDS
             </div>
@@ -96,8 +103,8 @@ export default function ClientePage() {
             </h1>
 
             <p className="mt-3 text-[#765c50]">
-              Consulta tu progreso y descubre cuánto te falta para obtener tu
-              recompensa.
+              Consulta tu progreso, tus puntos y tu nivel dentro de Umami
+              Rewards.
             </p>
           </div>
 
@@ -159,14 +166,73 @@ export default function ClientePage() {
                   </div>
 
                   <div className="rounded-2xl bg-white/10 px-5 py-4 text-center">
-                    <div className="text-xs text-[#ead8cd]">Progreso</div>
+                    <div className="text-xs text-[#ead8cd]">
+                      Compras
+                    </div>
+
                     <div className="mt-1 text-2xl font-bold">
                       {purchases}/10
                     </div>
                   </div>
                 </div>
 
+                {/* PUNTOS Y NIVEL */}
+                <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="rounded-2xl bg-white/10 p-4">
+                    <div className="text-xs text-[#ead8cd]">
+                      Puntos disponibles
+                    </div>
+
+                    <div className="mt-1 text-2xl font-bold">
+                      {customer.puntos}
+                    </div>
+
+                    <div className="text-xs text-[#ead8cd]">
+                      puntos
+                    </div>
+                  </div>
+
+                  <div className="rounded-2xl bg-white/10 p-4">
+                    <div className="text-xs text-[#ead8cd]">
+                      Puntos acumulados
+                    </div>
+
+                    <div className="mt-1 text-2xl font-bold">
+                      {customer.puntos_acumulados}
+                    </div>
+
+                    <div className="text-xs text-[#ead8cd]">
+                      puntos históricos
+                    </div>
+                  </div>
+
+                  <div className="rounded-2xl bg-white/10 p-4">
+                    <div className="text-xs text-[#ead8cd]">
+                      Nivel
+                    </div>
+
+                    <div className="mt-1 text-2xl font-bold">
+                      {customer.nivel}
+                    </div>
+
+                    <div className="text-xs text-[#ead8cd]">
+                      Umami Rewards
+                    </div>
+                  </div>
+                </div>
+
+                {/* PROGRESO */}
                 <div className="mt-8">
+                  <div className="flex justify-between items-center mb-3">
+                    <span className="text-sm text-[#ead8cd]">
+                      Progreso hacia tu recompensa
+                    </span>
+
+                    <span className="text-sm font-semibold">
+                      {purchases}/10
+                    </span>
+                  </div>
+
                   <div className="h-4 overflow-hidden rounded-full bg-white/20">
                     <div
                       className="h-full rounded-full bg-[#f0cf91] transition-all duration-500"
@@ -183,11 +249,14 @@ export default function ClientePage() {
                           }`}
                     </span>
 
-                    <span className="font-semibold">{progress}%</span>
+                    <span className="font-semibold">
+                      {progress}%
+                    </span>
                   </div>
                 </div>
               </div>
 
+              {/* RECOMPENSA */}
               {customer.reward_available && (
                 <div className="border-t border-white/10 bg-black/10 px-7 py-6 md:px-8">
                   <div className="text-xs font-medium tracking-[0.15em] text-[#f0cf91]">
@@ -210,7 +279,10 @@ export default function ClientePage() {
       </section>
 
       <footer className="bg-[#3d2419] px-6 py-8 text-center text-white">
-        <div className="font-semibold">Umami Foods & Co.</div>
+        <div className="font-semibold">
+          Umami Foods & Co.
+        </div>
+
         <div className="mt-1 text-sm text-[#ead8cd]">
           Umami Rewards · Programa de fidelización
         </div>
